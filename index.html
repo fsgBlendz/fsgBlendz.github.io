@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giorgia 💖</title>
+
+<style>
+body {
+    margin: 0;
+    background: #fff0f5;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.envelope {
+    width: 92vw;
+    max-width: 380px;
+    height: 260px;
+    background: #ffc0cb;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.envelope::before {
+    content: "💌 Tocca per aprire";
+    color: white;
+    font-size: 1.2em;
+}
+
+.paper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    transform: translateY(100%);
+    transition: transform 1s;
+    overflow-y: auto;
+}
+
+.envelope.open .paper {
+    transform: translateY(0);
+}
+
+h1, h2 {
+    color: #ff69b4;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px;
+    border-radius: 20px;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#yes {
+    background: #ff69b4;
+    color: white;
+}
+
+#no {
+    background: #ffe4e1;
+}
+
+.extra-buttons {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.extra-buttons button {
+    background: #ffb6c1;
+}
+
+.section {
+    display: none;
+    margin-top: 15px;
+}
+
+.heart {
+    position: fixed;
+    font-size: 20px;
+    animation: fall 3s linear;
+}
+
+@keyframes fall {
+    from { top: -10%; opacity: 1; }
+    to { top: 110%; opacity: 0; }
+}
+
+.kitty {
+    font-size: 60px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="envelope" onclick="openEnvelope()">
+<div class="paper">
+
+<h1>Giorgia 💖</h1>
+<p>Vuoi essere la mia Valentina?</p>
+
+<div class="buttons" id="mainButtons">
+    <button id="yes" onclick="yesClick()">Sì 💘</button>
+    <button id="no" onclick="noClick()">No</button>
+</div>
+
+<div class="extra-buttons" id="extras">
+    <button onclick="showSection('letter')">💌 Leggi la lettera</button>
+    <button onclick="showSection('games')">🎮 Mini-giochi & quiz</button>
+</div>
+
+<div class="kitty" id="kitty" style="display:none;">😽💋</div>
+
+<!-- LETTERA -->
+<div class="section" id="letter">
+    <h2>💌 La mia lettera</h2>
+    <p>
+        QUI INCOLLERAI LA TUA LETTERA 💖  
+        (può essere lunghissima)
+    </p>
+</div>
+
+<!-- GIOCHI -->
+<div class="section" id="games">
+<h2>🎮 Mini-giochi</h2>
+
+<p><b>1️⃣ Quanto mi conosci?</b></p>
+<button onclick="alert('Risposta giusta 💕')">Ti amo</button>
+
+<p><b>2️⃣ Vero o falso: siamo perfetti?</b></p>
+<button onclick="alert('VERISSIMO 😘')">Vero</button>
+
+<p><b>3️⃣ Clicca i cuori</b></p>
+<button onclick="clickHeart()">💗</button>
+<p id="heartCount">0 cuori</p>
+
+<p><b>4️⃣ Indovina il numero dell’amore</b></p>
+<button onclick="alert('È infinito ♾️')">∞</button>
+
+<p><b>5️⃣ Cosa scegli?</b></p>
+<button onclick="alert('Scelta perfetta 💘')">Noi due</button>
+
+<p><b>6️⃣ Memory emoji</b></p>
+<button onclick="alert('Hai vinto 😍')">😻 😻</button>
+
+<p><b>7️⃣ Countdown bacio</b></p>
+<button onclick="alert('💋💋💋')">3…2…1</button>
+
+<p><b>8️⃣ Quiz: chi sei per me?</b></p>
+<button onclick="alert('Tutto 💖')">Tutto</button>
+
+<p><b>9️⃣ Bottone timido</b></p>
+<button onclick="alert('Non scappo 😳')">Cliccami</button>
+
+<p><b>🔟 Messaggio segreto</b></p>
+<button onclick="alert('Ti amo più di ieri 💞')">Apri</button>
+
+</div>
+
+</div>
+</div>
+
+<script>
+let noTexts = ["Sei sicura?", "Daiii 🥺", "Pensaci", "Io ti aspetto 💕"];
+let noCount = 0;
+let hearts = 0;
+
+function openEnvelope() {
+    document.querySelector('.envelope').classList.add('open');
+}
+
+function noClick() {
+    const no = document.getElementById("no");
+    no.innerText = noTexts[noCount % noTexts.length];
+    noCount++;
+}
+
+function yesClick() {
+    document.getElementById("mainButtons").style.display = "none";
+    document.getElementById("extras").style.display = "flex";
+    document.getElementById("kitty").style.display = "block";
+    startHearts();
+}
+
+function startHearts() {
+    setInterval(() => {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.innerText = "💗";
+        h.style.left = Math.random()*100 + "vw";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),3000);
+    },300);
+}
+
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.style.display="none");
+    document.getElementById(id).style.display = "block";
+}
+
+function clickHeart() {
+    hearts++;
+    document.getElementById("heartCount").innerText = hearts + " cuori";
+}
+</script>
+
+</body>
+</html>
